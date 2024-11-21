@@ -1,12 +1,15 @@
+п»їusing System.Linq;
 using UnityEngine;
 
 public class BirdScript : MonoBehaviour
 {
     private Rigidbody2D rb2d;
+    private Collider2D[] colliders;
 
     void Start()
     {
         rb2d = this.GetComponent<Rigidbody2D>();
+        colliders = this.GetComponents<Collider2D>();
     }
 
     void Update()
@@ -18,9 +21,30 @@ public class BirdScript : MonoBehaviour
         this.transform.eulerAngles = new Vector3(0, 0, 2.5f * rb2d.linearVelocityY);
 
     }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Pipe"))
+        {
+            Debug.Log("Game Over");
+        }        
+    }
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Pipe"))
+        {
+            if(!colliders.Any(c => c.IsTouching(collision)))
+            {
+                Debug.Log("+ 1");
+            }
+            
+        }
+    }
 }
-/* Д.З. Композиція сцени:
- * - підібрати картинки для фонового оточення (дерева, квіти, хмари тощо)
- * - встановити межі ігрового поля (сцени), реалізувати різні фізичні 
- *    параметри для різних меж (стін, стелі, підлоги)
+/* Р”.Р—. РљРѕРјРїРѕР·РёС†С–СЏ РґРёРЅР°РјС–С‡РЅРёС… РѕР±'С”РєС‚С–РІ:
+ * - РїС–РґС–Р±СЂР°С‚Рё РєР°СЂС‚РёРЅРєРё РґР»СЏ СЂСѓС…РѕРјРёС… РµР»РµРјРµРЅС‚С–РІ 
+ * - Р·Р°Р±РµР·РїРµС‡РёС‚Рё С—С… РїРѕСЏРІСѓ, РїСЂРѕС…РѕРґР¶РµРЅРЅСЏ С–РіСЂРѕРІРёРј РїРѕР»РµРј, Р·РЅРёС‰РµРЅРЅСЏ 
+ *  = РїСЂРё РєРѕРЅС‚Р°РєС‚С– Р· "РїС‚Р°С…РѕРј"
+ *  = РїС–СЃР»СЏ РІРёС…РѕРґСѓ Р·Р° РїРѕР»Рµ
+ * ! РґРѕРґР°С‚Рё РІС–РґРµРѕР·Р°РїРёСЃ СЂРѕР±РѕС‚Рё РїСЂРѕРіСЂР°РјРё
  */
