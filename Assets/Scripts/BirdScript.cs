@@ -3,17 +3,22 @@ using UnityEngine;
 
 public class BirdScript : MonoBehaviour
 {
+    public static int score;
+
     private Rigidbody2D rb2d;
     private Collider2D[] colliders;
 
     void Start()
     {
+        score = 0;
         rb2d = this.GetComponent<Rigidbody2D>();
         colliders = this.GetComponents<Collider2D>();
     }
 
     void Update()
     {
+        if(Time.timeScale == 0.0f) return;
+
         if (Input.GetKeyDown(KeyCode.Space))
         { 
             rb2d.AddForce(Vector2.up * 300);
@@ -35,9 +40,8 @@ public class BirdScript : MonoBehaviour
         {
             if(!colliders.Any(c => c.IsTouching(collision)))
             {
-                Debug.Log("+ 1");
-            }
-            
+                score += 1;
+            }            
         }
     }
 }
